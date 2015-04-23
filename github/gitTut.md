@@ -6,6 +6,9 @@
 
 Send to `fedorjaro@gmail.com` your public ssh key
 
+[visit github tutorial]
+https://help.github.com/articles/generating-ssh-keys/
+
 ### Deploying
 
 * Create new branch `git checkout -b <name_of_feature>`

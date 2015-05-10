@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<xs:schema version="1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+    
+    <xs:element name="beans">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="bean" type="bean-type" minOccurs="1" maxOccurs="1" />
+                <xs:element name="camelContext" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="route" type="route-type" minOccurs="1" maxOccurs="1"/>
+                        </xs:sequence>
+                        <xs:attribute name="trace" type="xs:boolean" />
+                        <xs:attribute name="xmlns" type="xs:string"/>
+                    </xs:complexType>
+                    </xs:element>
+            </xs:sequence>    
+            <!--
+            <xs:attribute name="xmlns" type="xs:string" use="required" />
+            <xs:attribute name="camel" type="xs:string" use="required" />
+            <xs:attribute name="xsi" type="xs:string" use="required" />
+            <xs:attribute name="schemaLocation" type="xs:string" use="required" />
+            -->
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:complexType name="bean-type">
+        <xs:sequence>
+            <xs:element name="property" type="property-type" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:string" use="required" />
+        <xs:attribute name="class" type="xs:string" use="required" />
+    </xs:complexType>
+    
+    <xs:complexType name="property-type">
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="value" type="xs:string" use="required"/>
+    </xs:complexType>
+    
+    <xs:complexType name="route-type">
+        <xs:sequence>
+            <xs:element name="from" type="from-type" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="to" type="to-type" minOccurs="0" maxOccurs="10" />
+        </xs:sequence>
+        <xs:attribute name="customId" type="xs:boolean"/>
+        <xs:attribute name="id" type="xs:string"/>
+    </xs:complexType>
+    
+    <xs:complexType name="from-type">
+        <xs:attribute name="uri" type="from-uri-type" use="required" />
+    </xs:complexType>
+    
+    <xs:complexType name="to-type">
+        <xs:attribute name="uri" type="to-uri-type" use="required" />
+    </xs:complexType>
+    
+    <xs:simpleType name="from-uri-type">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([a-z])+[://][ph1-9?]([a-zA-Z0-9_.' !@#$%^*()_+={}|/:;,>?/`~ ])+|
+                               ([a-z])+[://][P1-9_]([0-9])+[?]([a-zA-Z0-9_.' !@#$%^*()_+={}|/:;,>?/`~ ])+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="to-uri-type">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([a-z])+[:]([a-zA-Z0-9_.' !@#$%^*()_+={}|/:;,>?/`~ ])+"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

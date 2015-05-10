@@ -229,10 +229,25 @@ public class NewJFrame extends javax.swing.JFrame {
 
         try {
             Document doc = null;
-            JaxpParser jp = new JaxpParser(xmlSource);
+            DocParser jp = new DocParser(xmlSource);
             jp.stringToDom(new File("src/silverspoon/config.xml"),xmlSource);
+            jp = new DocParser(new File("src/silverspoon/config.xml"));
             jLabel1.setIcon(new ImageIcon("src/silverspoon/globe.png"));
             JOptionPane.showMessageDialog(null,"xml code imported");
+            doc = jp.getDocument();
+            
+            ListMaker maker = new ListMaker(doc);
+            LinkedList<String> list = new LinkedList<>();
+            list = maker.getList();
+            
+            java.awt.EventQueue.invokeLater(new Runnable()
+            {
+                public void run()
+                {
+                    new SvgBuilder(list).setVisible(true);
+                }
+            });
+            
             return;
         } catch (Exception e) {
             e.printStackTrace();
@@ -254,7 +269,7 @@ public class NewJFrame extends javax.swing.JFrame {
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         String xmlSource = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" + "<root>\n" + "\n" + "</root>";
         try {
-            JaxpParser jp = new JaxpParser(new File("src/silverspoon/config.xml"));
+            DocParser jp = new DocParser(new File("src/silverspoon/config.xml"));
             jp.stringToDom(new File("src/silverspoon/config.xml"),xmlSource);
             jTextArea1.setText("");
             jList1.clearSelection();
@@ -269,7 +284,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
         String xmlSource = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" + "<root>\n" + "\n" + "</root>";
         try {
-            JaxpParser jp = new JaxpParser(new File("src/silverspoon/config.xml"));
+            DocParser jp = new DocParser(new File("src/silverspoon/config.xml"));
             jp.stringToDom(new File("src/silverspoon/config.xml"),xmlSource);
             jTextArea1.setText("");
             jList1.clearSelection();

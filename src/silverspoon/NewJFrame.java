@@ -236,8 +236,7 @@ public class NewJFrame extends javax.swing.JFrame {
             doc = jp.getDocument();
             
             ListMaker maker = new ListMaker(doc);
-            LinkedList<String> list = new LinkedList<>();
-            list = maker.getList();
+            final LinkedList<String> list = maker.getList();      
             
             java.awt.EventQueue.invokeLater(new Runnable()
             {

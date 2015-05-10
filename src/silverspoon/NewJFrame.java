@@ -239,6 +239,14 @@ public class NewJFrame extends javax.swing.JFrame {
             LinkedList<String> list = new LinkedList<>();
             list = maker.getList();
             
+            java.awt.EventQueue.invokeLater(new Runnable()
+            {
+                public void run()
+                {
+                    new SvgBuilder(list).setVisible(true);
+                }
+            });
+            
             return;
         } catch (Exception e) {
             e.printStackTrace();

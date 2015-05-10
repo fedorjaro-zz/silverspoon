@@ -218,7 +218,6 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void buttonClickResponse(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonClickResponse
-        /*
         String xmlSource = jTextArea1.getText();
         if(jList1.isSelectionEmpty())
         {
@@ -253,17 +252,7 @@ public class NewJFrame extends javax.swing.JFrame {
             e.printStackTrace();
         }
         JOptionPane.showMessageDialog(null,"this shit ain't formed well");
-        */
-        final LinkedList<String> list = new LinkedList<>();
-        list.add("box1");
         
-        java.awt.EventQueue.invokeLater(new Runnable()
-        {
-            public void run()
-            {
-                new SvgBuilder(list).setVisible(true);
-            }
-        });
     }//GEN-LAST:event_buttonClickResponse
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed

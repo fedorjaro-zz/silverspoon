@@ -98,7 +98,7 @@ public class SvgBuilder extends javax.swing.JFrame {
                         + "  style=\"fill:rgb(229,229,229);stroke:black;stroke-width:0;opacity:1\"/>"
                         + "<text x=\"455\" y=\"230\" fill=\"white\">ETHERNET</text>\n"
                         + "<text x=\"57\" y=\"52\" fill=\"white\">GPIO</text> \n";
-                
+
                 int[] pA = {47, 7, 47, 34, 50, 37, 60, 37, 63, 34, 63, 7, 60, 4, 50, 4, 47, 7};
                 slotX = 53;
                 slotY = 10;
@@ -341,104 +341,263 @@ public class SvgBuilder extends javax.swing.JFrame {
         return result;
     }
 
+    private String DrawArrow(int x, int y, String direction) {
+        String result = "";
+        //TODO Milan
+        // direciton "down"/"up"/"right" x,y are end of triangle 
+        //         /\    <- x,y coordinates
+        //        /  \
+        //       /    \
+        //      --------
+        return result;
+    }
+
+    private String PrepareLine(int x, int y, int x1, int y1, String direction) {
+        String result = "";
+        int middleX = Math.round((x + x1) / 2);
+        int middleY = Math.round((y + y1) / 2);
+        switch (direction) {
+            case "right":
+                result = "<g fill=\"white\" stroke=\"white\" stroke-width=\"2\">\n"
+                        + "    <path stroke-dasharray=\"5,5\" d=\"M" + x + " " + y + ""
+                        + " " + middleX + " " + y + "\"/>\n"
+                        + "  </g>";
+                result += "<g fill=\"white\" stroke=\"white\" stroke-width=\"2\">\n"
+                        + "    <path stroke-dasharray=\"5,5\" d=\"M" + middleX + " " + y1 + ""
+                        + " " + x1 + " " + y1 + "\"/>\n"
+                        + "  </g>";
+                result += "<g fill=\"white\" stroke=\"white\" stroke-width=\"2\">\n"
+                        + "    <path stroke-dasharray=\"5,5\" d=\"M" + middleX + " " + y + ""
+                        + " " + middleX + " " + y1 + "\"/>\n"
+                        + "  </g>";
+                result += DrawArrow(x1, y1, "right");
+                break;
+            case "down":
+                result = "<g fill=\"white\" stroke=\"white\" stroke-width=\"2\">\n"
+                        + "    <path stroke-dasharray=\"5,5\" d=\"M" + x + " " + y + ""
+                        + " " + x + " " + middleY + "\"/>\n"
+                        + "  </g>";
+                result += "<g fill=\"white\" stroke=\"white\" stroke-width=\"2\">\n"
+                        + "    <path stroke-dasharray=\"5,5\" d=\"M" + x + " " + middleY + ""
+                        + " " + x1 + " " + middleY + "\"/>\n"
+                        + "  </g>";
+                result += "<g fill=\"white\" stroke=\"white\" stroke-width=\"2\">\n"
+                        + "    <path stroke-dasharray=\"5,5\" d=\"M" + x1 + " " + middleY + ""
+                        + " " + x1 + " " + y1 + "\"/>\n"
+                        + "  </g>"
+                        + DrawArrow(x1, y1, "down");
+                break;
+            case "outOfBoard2":
+                result += "<g fill=\"white\" stroke=\"white\" stroke-width=\"2\">\n"
+                        + "    <path stroke-dasharray=\"5,5\" d=\"M" + x + " " + y + ""
+                        + " " + (x) + " " + 70 + "\"/>\n"
+                        + "  </g>";
+                result += "<g fill=\"white\" stroke=\"white\" stroke-width=\"2\">\n"
+                        + "    <path stroke-dasharray=\"5,5\" d=\"M" + x + " " + 70 + ""
+                        + " " + 140 + " " + 70 + "\"/>\n"
+                        + "  </g>";
+                result += "<g fill=\"white\" stroke=\"white\" stroke-width=\"2\">\n"
+                        + "    <path stroke-dasharray=\"5,5\" d=\"M" + 140 + " " + 70 + ""
+                        + " " + 140 + " " + 315 + "\"/>\n"
+                        + "  </g>";
+                result += "<g fill=\"white\" stroke=\"white\" stroke-width=\"2\">\n"
+                        + "    <path stroke-dasharray=\"5,5\" d=\"M" + 140 + " " + 315 + ""
+                        + " " + x1 + " " + 315 + "\"/>\n"
+                        + "  </g>";
+                result += "<g fill=\"white\" stroke=\"white\" stroke-width=\"2\">\n"
+                        + "    <path stroke-dasharray=\"5,5\" d=\"M" + x1 + " " + 315 + ""
+                        + " " + x1 + " " + y1 + "\"/>\n"
+                        + "  </g>"
+                        + DrawArrow(x, y, "down");
+                break;
+
+        }
+
+        return result;
+    }
+
+    private String GetInitLine(String port, String boardCase, int x1, int y1) {
+        int x = 0, y = 0;
+        String result = "";
+        char fPart = port.charAt(1);
+        int portN = Integer.parseInt(port.substring(3));
+        switch (boardCase) {
+            case "1":
+                result = PrepareLine(97, 42, x1, y1, "down");
+                break;
+            case "2":
+                switch (fPart) {
+                    case '8':
+                        y = (portN % 2 == 0) ? 16 : 35;
+                        x = 155 + ((portN > 1 ? portN - 1 : portN) / 2) * 18;
+                        result = PrepareLine(x, y, x1, y1, "down");
+                        break;
+                    case '9':
+                        y = (portN % 2 == 0) ? 357 : 376;
+                        x = 155 + ((portN > 1 ? portN - 1 : portN) / 2) * 18;
+                        result = PrepareLine(x1, y1, x, y, "outOfBoard2");
+                        break;
+                }
+                break;
+            case "3":
+                //TODO
+                break;
+            default:
+            //trow exceprion
+        }
+
+        return result;
+    }
+
     private String PrepareSvg(LinkedList<String> config) {
         String result;
-        result = PrepareBoard(config.pop());
-        
-         // KRABICKY
-         int NumberOfBoxes = config.size();
-         NumberOfBoxes--;
-         int rows = (NumberOfBoxes / 4) + (NumberOfBoxes % 4 == 0 ? 0 : 1);
-        
-         int x = 65;
-         int y = 0;
-         switch(rows) {
-         case 1: 
-         y = 160;
-         break;
-         case 2: 
-         y = 130;
-         result += "<line x1=\"400\" y1=\"150\" x2=\"417\" y2=\"150\" style=\"stroke:rgb(255,255,255); \n" 
-         + "  stroke-width:2\"/>"
-         + "<line x1=\"417\" y1=\"150\" x2=\"417\" y2=\"180\" style=\"stroke:rgb(255,255,255); \n" 
-         + "  stroke-width:2\"/>"
-         + "<line x1=\"417\" y1=\"180\" x2=\"53\" y2=\"180\" style=\"stroke:rgb(255,255,255); \n" 
-         + "  stroke-width:2\"/>" 
-         + "<line x1=\"53\" y1=\"180\" x2=\"53\" y2=\"210\" style=\"stroke:rgb(255,255,255); \n" 
-         + "  stroke-width:2\"/>"
-         + "<line x1=\"53\" y1=\"210\" x2=\"73\" y2=\"210\" style=\"stroke:rgb(255,255,255); \n" 
-         + "  stroke-width:2\"/>";
-         break;
-         case 3:
-         y = 100;
-         result += "<line x1=\"400\" y1=\"120\" x2=\"417\" y2=\"120\" style=\"stroke:rgb(255,255,255); \n" 
-         + "  stroke-width:2\"/>"
-         + "<line x1=\"417\" y1=\"120\" x2=\"417\" y2=\"150\" style=\"stroke:rgb(255,255,255); \n" 
-         + "  stroke-width:2\"/>"
-         + "<line x1=\"417\" y1=\"150\" x2=\"53\" y2=\"150\" style=\"stroke:rgb(255,255,255); \n" 
-         + "  stroke-width:2\"/>" 
-         + "<line x1=\"53\" y1=\"150\" x2=\"53\" y2=\"180\" style=\"stroke:rgb(255,255,255); \n" 
-         + "  stroke-width:2\"/>"
-         + "<line x1=\"53\" y1=\"180\" x2=\"73\" y2=\"180\" style=\"stroke:rgb(255,255,255); \n" 
-         + "  stroke-width:2\"/>";
-                
-         result += "<line x1=\"400\" y1=\"180\" x2=\"417\" y2=\"180\" style=\"stroke:rgb(255,255,255); \n" 
-         + "  stroke-width:2\"/>"
-         + "<line x1=\"417\" y1=\"180\" x2=\"417\" y2=\"210\" style=\"stroke:rgb(255,255,255); \n" 
-         + "  stroke-width:2\"/>"
-         + "<line x1=\"417\" y1=\"210\" x2=\"53\" y2=\"210\" style=\"stroke:rgb(255,255,255); \n" 
-         + "  stroke-width:2\"/>" 
-         + "<line x1=\"53\" y1=\"210\" x2=\"53\" y2=\"240\" style=\"stroke:rgb(255,255,255); \n" 
-         + "  stroke-width:2\"/>"
-         + "<line x1=\"53\" y1=\"240\" x2=\"73\" y2=\"240\" style=\"stroke:rgb(255,255,255); \n" 
-         + "  stroke-width:2\"/>";
-         break;
-         }
-         switch(NumberOfBoxes) {
-         case 1: x = 200;break;
-         case 2: x = 160;break;
-         case 3: x = 110;break;
-         }
-        
-         result += "<text fill=\"white\" x=\"" + (80) + "\" y=\"" + (27) + "\">" + config.pop() + "</text>";
-        
-         int counter = 1;
-        
-         result += "<g fill=\"white\" stroke=\"white\" stroke-width=\"2\">\n" 
-         + "    <path stroke-dasharray=\"5,5\" d=\"M97 42" 
-         + " " + (x+35) + " " + (y) + "\"/>\n" 
-         + "  </g>";
-        
-         for (int j = 0; j < rows; j++) {
-         for (int i = 0; i < 4; i++) {
-         if (counter > NumberOfBoxes)
-         break;
-         counter++;
-                
-         result += "<rect x=\"" + x + "\" y=\"" + y + "\" rx=\"0\" ry=\"0\" width=\"70\" height=\"40\"\n"
-         + "style=\"fill:rgb(255,255,255);stroke:black;stroke-width:0;opacity:1\"/>\n";
+        String boardCase = config.pop();
 
-         if ((NumberOfBoxes > 1) && (i < 3) && (counter <= NumberOfBoxes)) {
-         result += "<line x1=\"" + (x+70) + "\" y1=\"" + (y+20) + "\" x2=\"" 
-         + (x+90) + "\" y2=\"" + (y+20) + "\" style=\"stroke:rgb(255,255,255); \n" 
-         + "  stroke-width:2\"/>";
-         }
-                
-         if (counter == NumberOfBoxes + 1) {
-         result += "<g fill=\"white\" stroke=\"white\" stroke-width=\"2\">\n" 
-         + "    <path stroke-dasharray=\"5,5\" d=\"M" + (x+70) + " " + (y+20) 
-         + " " + "455 280\"/>\n"
-         + "  </g>";
-         }
+        result = PrepareBoard(boardCase);
 
-         result += "<text x=\"" + (x + 15) + "\" y=\"" + (y + 23) + "\">" + config.pop() + "</text>";
+        int NumberOfBoxes = config.size();
+        NumberOfBoxes--;
+        int rows = (NumberOfBoxes / 4) + (NumberOfBoxes % 4 == 0 ? 0 : 1);
 
-         x += 90;
+        int x = 0, y = 0, x1 = 0, x2 = 0, y1 = 0, y2 = 0;
 
-         }
-         x = 65;
-         y += 60;
-         }
+        switch (boardCase) {
+            case "1":
+                x = 65;
+                y = 0;
+                x1 = 400;
+                x2 = 53;
+                y1 = 150;
+                y2 = 150;
+                break;
+            case "2":
+                x = 170;
+                y = 0;
+                x1 = 400 + 105;
+                x2 = 53 + 105;
+                y1 = 150;
+                y2 = 150;
+                break;
+            case "3":
+                x = 140;
+                y = 0;
+                x1 = 400 + 75;
+                x2 = 53 + 75;
+                y1 = 150;
+                y2 = 150;
+                break;
+        }
+
+        switch (rows) {
+            case 1:
+                y = 160;
+                break;
+            case 2:
+                y = 130;
+                result += "<line x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + (x1 + 17) + "\" y2=\"" + y2 + "\" style=\"stroke:rgb(255,255,255); \n"
+                        + "  stroke-width:2\"/>"
+                        + "<line x1=\"" + (x1 + 17) + "\" y1=\"" + y1 + "\" x2=\"" + (x1 + 17) + "\" y2=\"" + (y2 + 30) + "\" style=\"stroke:rgb(255,255,255); \n"
+                        + "  stroke-width:2\"/>"
+                        + "<line x1=\"" + (x1 + 17) + "\" y1=\"" + (y1 + 30) + "\" x2=\"" + x2 + "\" y2=\"" + (y2 + 30) + "\" style=\"stroke:rgb(255,255,255); \n"
+                        + "  stroke-width:2\"/>"
+                        + "<line x1=\"" + x2 + "\" y1=\"" + (y1 + 30) + "\" x2=\"" + x2 + "\" y2=\"" + (y2 + 60) + "\" style=\"stroke:rgb(255,255,255); \n"
+                        + "  stroke-width:2\"/>"
+                        + "<line x1=\"" + x2 + "\" y1=\"" + (y1 + 60) + "\" x2=\"" + (x2 + 20) + "\" y2=\"" + (y2 + 60) + "\" style=\"stroke:rgb(255,255,255); \n"
+                        + "  stroke-width:2\"/>";
+                break;
+            case 3:
+                y = 100;
+                result += "<line x1=\"" + x1 + "\" y1=\"" + (y1 - 30) + "\" x2=\"" + (x1 + 17) + "\" y2=\"" + (y2 - 30) + "\" style=\"stroke:rgb(255,255,255); \n"
+                        + "  stroke-width:2\"/>"
+                        + "<line x1=\"" + (x1 + 17) + "\" y1=\"" + (y1 - 30) + "\" x2=\"" + (x1 + 17) + "\" y2=\"" + y2 + "\" style=\"stroke:rgb(255,255,255); \n"
+                        + "  stroke-width:2\"/>"
+                        + "<line x1=\"" + (x1 + 17) + "\" y1=\"" + (y1) + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" style=\"stroke:rgb(255,255,255); \n"
+                        + "  stroke-width:2\"/>"
+                        + "<line x1=\"" + x2 + "\" y1=\"" + (y1) + "\" x2=\"" + x2 + "\" y2=\"" + (y2 + 30) + "\" style=\"stroke:rgb(255,255,255); \n"
+                        + "  stroke-width:2\"/>"
+                        + "<line x1=\"" + x2 + "\" y1=\"" + (y1 + 30) + "\" x2=\"" + (x2 + 20) + "\" y2=\"" + (y2 + 30) + "\" style=\"stroke:rgb(255,255,255); \n"
+                        + "  stroke-width:2\"/>"
+                        + "<line x1=\"" + x1 + "\" y1=\"" + (y1 + 30) + "\" x2=\"" + (x1 + 17) + "\" y2=\"" + (y2 + 30) + "\" style=\"stroke:rgb(255,255,255); \n"
+                        + "  stroke-width:2\"/>"
+                        + "<line x1=\"" + (x1 + 17) + "\" y1=\"" + (y1 + 30) + "\" x2=\"" + (x1 + 17) + "\" y2=\"" + (y2 + 60) + "\" style=\"stroke:rgb(255,255,255); \n"
+                        + "  stroke-width:2\"/>"
+                        + "<line x1=\"" + (x1 + 17) + "\" y1=\"" + (y1 + 60) + "\" x2=\"" + x2 + "\" y2=\"" + (y2 + 60) + "\" style=\"stroke:rgb(255,255,255); \n"
+                        + "  stroke-width:2\"/>"
+                        + "<line x1=\"" + x2 + "\" y1=\"" + (y1 + 60) + "\" x2=\"" + x2 + "\" y2=\"" + (y2 + 90) + "\" style=\"stroke:rgb(255,255,255); \n"
+                        + "  stroke-width:2\"/>"
+                        + "<line x1=\"" + x2 + "\" y1=\"" + (y1 + 90) + "\" x2=\"" + (x2 + 20) + "\" y2=\"" + (y2 + 90) + "\" style=\"stroke:rgb(255,255,255); \n"
+                        + "  stroke-width:2\"/>";
+                break;
+        }
+        switch (NumberOfBoxes) {
+            case 1:
+                x = 200;
+                break;
+            case 2:
+                x = 160;
+                break;
+            case 3:
+                x = 110;
+                break;
+        }
+        String initP = config.pop();
+        result += "<text fill=\"white\" x=\"" + (80) + "\" y=\"" + (27) + "\">" + initP + "</text>";
+
+        int counter = 1;
+        //initial line
+        result += GetInitLine(initP, boardCase, x + 35, y);
+
+        for (int j = 0; j < rows; j++) {
+            for (int i = 0; i < 4; i++) {
+                if (counter > NumberOfBoxes) {
+                    break;
+                }
+                counter++;
+
+                result += "<rect x=\"" + x + "\" y=\"" + y + "\" rx=\"0\" ry=\"0\" width=\"70\" height=\"40\"\n"
+                        + "style=\"fill:rgb(255,255,255);stroke:black;stroke-width:0;opacity:1\"/>\n";
+
+                if ((NumberOfBoxes > 1) && (i < 3) && (counter <= NumberOfBoxes)) {
+                    result += "<line x1=\"" + (x + 70) + "\" y1=\"" + (y + 20) + "\" x2=\""
+                            + (x + 90) + "\" y2=\"" + (y + 20) + "\" style=\"stroke:rgb(255,255,255); \n"
+                            + "  stroke-width:2\"/>"
+                            + DrawArrow(x + 90, y + 20, initP);
+
+                }
+
+                if (counter == NumberOfBoxes + 1) {
+                    switch (boardCase) {
+                        // TODO make it more certain on 2,3 board
+                        case "1":
+                            result += PrepareLine(x + 70, y + 20, 455, 280, "right");
+                            break;
+                        case "2":
+                            result += PrepareLine(x + 70, y + 20, 455 + 97, 280, "right");
+                            break;
+                        case "3":
+                            result += PrepareLine(x + 70, y + 20, 455 + 70, 280, "right");
+                            break;
+                    }
+                }
+
+                result += "<text x=\"" + (x + 15) + "\" y=\"" + (y + 23) + "\">" + config.pop() + "</text>";
+
+                x += 90;
+
+            }
+            switch (boardCase) {
+                case "1":
+                    x = 65;
+                    break;
+                case "2":
+                    x = 170;
+                    break;
+                case "3":
+                    x = 140;
+                    break;
+            }
+            y += 60;
+        }
         result += "</svg>";
         return result;
     }
@@ -471,7 +630,13 @@ public class SvgBuilder extends javax.swing.JFrame {
     public static void main(String args[]) {
         final LinkedList<String> list = new LinkedList<>();
         list.add("2");
-        list.add("PH7");
+        list.add("P8_4");
+        list.add("1");
+        list.add("2");
+        list.add("3");
+        list.add("4");
+        list.add("5");
+        list.add("6");
         list.add("1");
         list.add("2");
         list.add("3");

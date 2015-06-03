@@ -344,7 +344,7 @@ public class SvgBuilder extends javax.swing.JFrame {
     private String DrawArrow(int x, int y, String direction) {
         String result = "";
         //TODO Milan
-        // direciton "down"/"up"/"right" x,y are end of triangle 
+        // direciton "down"/"right" x,y are end of triangle 
         //         /\    <- x,y coordinates
         //        /  \
         //       /    \
@@ -410,6 +410,37 @@ public class SvgBuilder extends javax.swing.JFrame {
                         + "  </g>"
                         + DrawArrow(x, y, "down");
                 break;
+                case "outOfBoard3":
+                result += "<g fill=\"white\" stroke=\"white\" stroke-width=\"2\">\n"
+                        + "    <path stroke-dasharray=\"5,5\" d=\"M" + x + " " + y + ""
+                        + " " + (x) + " " + 70 + "\"/>\n"
+                        + "  </g>";
+                result += "<g fill=\"white\" stroke=\"white\" stroke-width=\"2\">\n"
+                        + "    <path stroke-dasharray=\"5,5\" d=\"M" + x + " " + 70 + ""
+                        + " " + 110 + " " + 70 + "\"/>\n"
+                        + "  </g>";
+                result += "<g fill=\"white\" stroke=\"white\" stroke-width=\"2\">\n"
+                        + "    <path stroke-dasharray=\"5,5\" d=\"M" + 110 + " " + 70 + ""
+                        + " " + 110 + " " + 280 + "\"/>\n"
+                        + "  </g>";
+                result += "<g fill=\"white\" stroke=\"white\" stroke-width=\"2\">\n"
+                        + "    <path stroke-dasharray=\"5,5\" d=\"M" + 110 + " " + 280 + ""
+                        + " " + 390 + " " + 280 + "\"/>\n"
+                        + "  </g>";
+                result += "<g fill=\"white\" stroke=\"white\" stroke-width=\"2\">\n"
+                        + "    <path stroke-dasharray=\"5,5\" d=\"M" + 390 + " " + 280 + ""
+                        + " " + 390 + " " + 335 + "\"/>\n"
+                        + "  </g>";
+                result += "<g fill=\"white\" stroke=\"white\" stroke-width=\"2\">\n"
+                        + "    <path stroke-dasharray=\"5,5\" d=\"M" + 390 + " " + 335 + ""
+                        + " " + x1 + " " + 335 + "\"/>\n"
+                        + "  </g>";
+                result += "<g fill=\"white\" stroke=\"white\" stroke-width=\"2\">\n"
+                        + "    <path stroke-dasharray=\"5,5\" d=\"M" + x1 + " " + 335 + ""
+                        + " " + x1 + " " + y1 + "\"/>\n"
+                        + "  </g>"
+                        + DrawArrow(x, y, "down");
+                break;
 
         }
 
@@ -440,10 +471,23 @@ public class SvgBuilder extends javax.swing.JFrame {
                 }
                 break;
             case "3":
+                switch (fPart) {
+                    case '8':
+                        y = (portN % 2 == 0) ? 16 : 33;
+                        x = 273 + ((portN > 1 ? portN - 1 : portN) / 2) * 13;
+                        result = PrepareLine(x, y, x1, y1, "down");
+                        break;
+                    case '9':
+                        y = (portN % 2 == 0) ? 357 : 373;
+                        x = 573 - ((portN > 1 ? portN - 1 : portN) / 2) * 13;
+                        result = PrepareLine(x1, y1, x, y, "outOfBoard3");
+                        break;
+                }
+                
                 //TODO
                 break;
             default:
-            //trow exceprion
+            //trow exception
         }
 
         return result;
@@ -629,8 +673,8 @@ public class SvgBuilder extends javax.swing.JFrame {
 
     public static void main(String args[]) {
         final LinkedList<String> list = new LinkedList<>();
-        list.add("2");
-        list.add("P8_4");
+        list.add("3");
+        list.add("P9_35");
         list.add("1");
         list.add("2");
         list.add("3");

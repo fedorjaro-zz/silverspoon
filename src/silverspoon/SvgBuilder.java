@@ -345,10 +345,10 @@ public class SvgBuilder extends javax.swing.JFrame {
         String result = "";
         //TODO Milan
         // direciton "down"/"right" x,y are end of triangle 
-        //         /\    <- x,y coordinates
-        //        /  \
-        //       /    \
-        //      --------
+        //         /\    <- x,y coordinates     |\
+        //        /  \                          | \    <--x,y
+        //       /    \                         | /
+        //      --------                        |/
         return result;
     }
 
@@ -455,6 +455,7 @@ public class SvgBuilder extends javax.swing.JFrame {
         switch (boardCase) {
             case "1":
                 result = PrepareLine(97, 42, x1, y1, "down");
+                result += "<text fill=\"white\" x=\"" + (80) + "\" y=\"" + (27) + "\">" + port + "</text>";
                 break;
             case "2":
                 switch (fPart) {
@@ -462,11 +463,13 @@ public class SvgBuilder extends javax.swing.JFrame {
                         y = (portN % 2 == 0) ? 16 : 35;
                         x = 155 + ((portN > 1 ? portN - 1 : portN) / 2) * 18;
                         result = PrepareLine(x, y, x1, y1, "down");
+                        result += "<text fill=\"white\" x=\"" + (x-50) + "\" y=\"" + (y+55) + "\">" + port + "</text>";
                         break;
                     case '9':
                         y = (portN % 2 == 0) ? 357 : 376;
                         x = 155 + ((portN > 1 ? portN - 1 : portN) / 2) * 18;
                         result = PrepareLine(x1, y1, x, y, "outOfBoard2");
+                        result += "<text fill=\"white\" x=\"" + (x-50) + "\" y=\"" + (y-45) + "\">" + port + "</text>";
                         break;
                 }
                 break;
@@ -476,15 +479,15 @@ public class SvgBuilder extends javax.swing.JFrame {
                         y = (portN % 2 == 0) ? 16 : 33;
                         x = 273 + ((portN > 1 ? portN - 1 : portN) / 2) * 13;
                         result = PrepareLine(x, y, x1, y1, "down");
+                        result += "<text fill=\"white\" x=\"" + (220) + "\" y=\"" + (30) + "\">" + port + "</text>";
                         break;
                     case '9':
                         y = (portN % 2 == 0) ? 357 : 373;
                         x = 573 - ((portN > 1 ? portN - 1 : portN) / 2) * 13;
                         result = PrepareLine(x1, y1, x, y, "outOfBoard3");
+                        result += "<text fill=\"white\" x=\"" + (340) + "\" y=\"" + (325) + "\">" + port + "</text>";
                         break;
                 }
-                
-                //TODO
                 break;
             default:
             //trow exception
@@ -584,12 +587,12 @@ public class SvgBuilder extends javax.swing.JFrame {
                 x = 110;
                 break;
         }
-        String initP = config.pop();
-        result += "<text fill=\"white\" x=\"" + (80) + "\" y=\"" + (27) + "\">" + initP + "</text>";
+        String initPort = config.pop();
+        //result += "<text fill=\"white\" x=\"" + (80) + "\" y=\"" + (27) + "\">" + initP + "</text>";
 
         int counter = 1;
         //initial line
-        result += GetInitLine(initP, boardCase, x + 35, y);
+        result += GetInitLine(initPort, boardCase, x + 35, y);
 
         for (int j = 0; j < rows; j++) {
             for (int i = 0; i < 4; i++) {
@@ -605,7 +608,7 @@ public class SvgBuilder extends javax.swing.JFrame {
                     result += "<line x1=\"" + (x + 70) + "\" y1=\"" + (y + 20) + "\" x2=\""
                             + (x + 90) + "\" y2=\"" + (y + 20) + "\" style=\"stroke:rgb(255,255,255); \n"
                             + "  stroke-width:2\"/>"
-                            + DrawArrow(x + 90, y + 20, initP);
+                            + DrawArrow(x + 90, y + 20, "right");
 
                 }
 
@@ -673,8 +676,8 @@ public class SvgBuilder extends javax.swing.JFrame {
 
     public static void main(String args[]) {
         final LinkedList<String> list = new LinkedList<>();
-        list.add("3");
-        list.add("P9_35");
+        list.add("1");
+        list.add("P8_34");
         list.add("1");
         list.add("2");
         list.add("3");

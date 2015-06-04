@@ -51,8 +51,6 @@ public class NewJFrame extends javax.swing.JFrame {
         jList1 = new javax.swing.JList();
         jLabel2 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
 
         jInternalFrame1.setVisible(true);
 
@@ -174,25 +172,6 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jTabbedPane3.addTab("Edit", jPanel1);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(595, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(299, Short.MAX_VALUE))
-        );
-
-        jTabbedPane3.addTab("Configuration", jPanel3);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -221,8 +200,8 @@ public class NewJFrame extends javax.swing.JFrame {
         String xmlSource = jTextArea1.getText();
         if(jList1.isSelectionEmpty())
         {
-            JOptionPane.showMessageDialog(null,"pick a device wanker");
-            return;
+            //JOptionPane.showMessageDialog(null,"pick a device wanker");
+            //return;
         }
         if(xmlSource.length() > 0)
 
@@ -230,14 +209,12 @@ public class NewJFrame extends javax.swing.JFrame {
             Document doc = null;
             DocParser jp = new DocParser(xmlSource);
             jp.stringToDom(new File("src/silverspoon/config.xml"),xmlSource);
-            jp = new DocParser(new File("src/silverspoon/config.xml"));
-            jLabel1.setIcon(new ImageIcon("src/silverspoon/globe.png"));
-            JOptionPane.showMessageDialog(null,"xml code imported");
+            jp = new DocParser(new File("src/silverspoon/config.xml"));          
+            //JOptionPane.showMessageDialog(null,"xml code imported");
             doc = jp.getDocument();
             
-            ListMaker maker = new ListMaker(doc, 2);
+            ListMaker maker = new ListMaker(doc, 3);
             final LinkedList<String> list = maker.getList();      
-            
             java.awt.EventQueue.invokeLater(new Runnable()
             {
                 public void run()
@@ -250,7 +227,7 @@ public class NewJFrame extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        JOptionPane.showMessageDialog(null,"this shit ain't formed well");
+        //JOptionPane.showMessageDialog(null,"this shit ain't formed well");
         
     }//GEN-LAST:event_buttonClickResponse
 
@@ -322,12 +299,10 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JInternalFrame jInternalFrame2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JList jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane2;

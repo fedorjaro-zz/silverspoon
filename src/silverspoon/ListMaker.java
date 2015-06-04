@@ -50,7 +50,7 @@ public class ListMaker {
             unparsedString = to.get(i).getAttribute("uri");
             parsedString = unparsedString.split(":",2);
             list.add(parsedString[0]);
-            System.out.println(parsedString[0]);
+            //System.out.println(parsedString[0]);
         }
     }
     

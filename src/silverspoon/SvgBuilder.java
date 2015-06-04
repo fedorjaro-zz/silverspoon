@@ -13,18 +13,18 @@ import java.util.LinkedList;
  * @author Jaroslav, Milan
  */
 class IconPanel extends JPanel {
-    
+
     public static final long serialVersionUID = 0;
     final SVGIcon icon;
     private String config;
-    
+
     public IconPanel(String c) {
         StringReader reader = new StringReader(c);
         URI uri = SVGCache.getSVGUniverse().loadSVG(reader, "myImage");
-        
+
         icon = new SVGIcon();
         icon.setSvgURI(uri);
-        
+
         setPreferredSize(new Dimension(640, 390));
     }
 
@@ -40,17 +40,18 @@ class IconPanel extends JPanel {
 }
 
 public class SvgBuilder extends javax.swing.JFrame {
+
     public static final long serialVersionUID = 0;
     IconPanel panel;
 
     private String PrepareBoard(String config) {
         String result = "";
-        
+
         int slotX;
         int slotY;
-        
+
         switch (config) {
-            
+
             // BOARD 1
             case "1":
                 setPreferredSize(new Dimension(555, 376));
@@ -113,26 +114,26 @@ public class SvgBuilder extends javax.swing.JFrame {
                             pA[m] += 17;
                         }
                     }
-                    
-                result += "\"\n"
-                        + "  style=\"fill:rgb(64,64,64);stroke:purple;stroke-width:0\"/>"
-                        + "<rect x=\"" + slotX + "\" y=\"" + slotY + "\" width=\"4\" height=\"4\"\n"
-                        + "style=\"fill:rgb(184,177,128);stroke:black;stroke-width:0;opacity:1\"/>"
-                        + "<rect x=\"" + slotX + "\" y=\"" + (slotY + 17) + "\" width=\"4\" height=\"4\"\n"
-                        + "style=\"fill:rgb(184,177,128);stroke:black;stroke-width:0;opacity:1\"/>";
 
-                if (k < 19) {
-                    result += "<rect x=\"" + (slotX + 10) + "\" y=\"" + (slotY - 3) + "\" width=\"1\" height=\"27\"\n"
-                            + "style=\"fill:rgb(0,0,0);stroke:black;stroke-width:0;opacity:1\"/>";
+                    result += "\"\n"
+                            + "  style=\"fill:rgb(64,64,64);stroke:purple;stroke-width:0\"/>"
+                            + "<rect x=\"" + slotX + "\" y=\"" + slotY + "\" width=\"4\" height=\"4\"\n"
+                            + "style=\"fill:rgb(184,177,128);stroke:black;stroke-width:0;opacity:1\"/>"
+                            + "<rect x=\"" + slotX + "\" y=\"" + (slotY + 17) + "\" width=\"4\" height=\"4\"\n"
+                            + "style=\"fill:rgb(184,177,128);stroke:black;stroke-width:0;opacity:1\"/>";
+
+                    if (k < 19) {
+                        result += "<rect x=\"" + (slotX + 10) + "\" y=\"" + (slotY - 3) + "\" width=\"1\" height=\"27\"\n"
+                                + "style=\"fill:rgb(0,0,0);stroke:black;stroke-width:0;opacity:1\"/>";
                     }
-                
+
                     slotX += 17;
                 }
                 break;
-                
+
             // BOARD 2
             case "2":
-                setPreferredSize(new Dimension(640, 412));             
+                setPreferredSize(new Dimension(640, 412));
                 result = "<svg width=\"640\" height=\"390\">\n"
                         + "\n"
                         + "  <rect x=\"10\" y=\"0\" rx=\"33\" ry=\"33\" width=\"400\" height=\"390\"\n"
@@ -229,10 +230,10 @@ public class SvgBuilder extends javax.swing.JFrame {
                     slotX += 18;
                 }
                 break;
-                
+
             // BOARD 3
             case "3":
-                setPreferredSize(new Dimension(640, 412));             
+                setPreferredSize(new Dimension(640, 412));
                 result = "<svg width=\"640\" height=\"390\">\n"
                         + "\n"
                         + "  <rect x=\"3\" y=\"0\" rx=\"7\" ry=\"7\" width=\"300\" height=\"387\"\n"
@@ -336,16 +337,16 @@ public class SvgBuilder extends javax.swing.JFrame {
                                 + "<circle cx=\"" + slotX + "\" cy=\"" + slotY + "\" r=\"1\" fill=\"rgb(213,186,23)\"/>\n"
                                 + "<circle cx=\"" + slotX + "\" cy=\"" + (slotY + 341) + "\" r=\"4\" fill=\"rgb(0,0,0)\"/>\n"
                                 + "<circle cx=\"" + slotX + "\" cy=\"" + (slotY + 341) + "\" r=\"1\" fill=\"rgb(213,186,23)\"/>\n";
-                        
+
                         slotX += 13;
                     }
-                    
+
                     slotX = 274;
                     slotY += 14;
                 }
                 break;
         }
-        
+
         return result;
     }
 
@@ -362,7 +363,7 @@ public class SvgBuilder extends javax.swing.JFrame {
                         + (x - 10) + "," + (y - 7) + "\" style=\"fill:white;\" />";
                 break;
         }
-        
+
         return result;
     }
 
@@ -370,7 +371,7 @@ public class SvgBuilder extends javax.swing.JFrame {
         String result = "";
         int middleX = Math.round((x + x1) / 2);
         int middleY = Math.round((y + y1) / 2);
-        
+
         switch (direction) {
             case "right":
                 result = "<g fill=\"white\" stroke=\"white\" stroke-width=\"2\">\n"
@@ -425,7 +426,7 @@ public class SvgBuilder extends javax.swing.JFrame {
                         + "  </g>"
                         + DrawArrow(x, y, "down");
                 break;
-                case "outOfBoard3":
+            case "outOfBoard3":
                 result += "<g fill=\"white\" stroke=\"white\" stroke-width=\"2\">\n"
                         + "    <path stroke-dasharray=\"5,5\" d=\"M" + x + " " + y + ""
                         + " " + (x) + " " + 70 + "\"/>\n"
@@ -463,17 +464,28 @@ public class SvgBuilder extends javax.swing.JFrame {
 
     private String GetInitLine(String port, String boardCase, int x1, int y1) {
         char fPart = port.charAt(1);
-        int portN = Integer.parseInt(port.substring(3));
-        
+
+        int portN = 0;
+        if (fPart == 'h') {
+            portN = Integer.parseInt(port.substring(2));
+        } else {
+            portN = Integer.parseInt(port.substring(3));
+        }
+        if (portN > 46 || portN < 1)
+            throw new Exception("Wrong port number");
         String result = "";
         int x = 0, y = 0;
-        
+
         switch (boardCase) {
             case "1":
                 result = PrepareLine(97, 42, x1, y1, "down");
                 result += "<text fill=\"white\" x=\"" + (80) + "\" y=\"" + (27) + "\">" + port + "</text>";
                 
-                // TODO Jaroslav
+                y = (portN % 2 == 0) ? 16 : 33;
+                x = 54 + ((portN > 1 ? portN - 1 : portN) / 2) * 1;
+                result = PrepareLine(x, y, x1, y1, "down");
+                result += "<text fill=\"white\" x=\"" + (x - 50) + "\" y=\"" + (y + 55) + "\">" + port + "</text>";
+                break;
 
                 break;
             case "2":
@@ -482,13 +494,13 @@ public class SvgBuilder extends javax.swing.JFrame {
                         y = (portN % 2 == 0) ? 16 : 35;
                         x = 155 + ((portN > 1 ? portN - 1 : portN) / 2) * 18;
                         result = PrepareLine(x, y, x1, y1, "down");
-                        result += "<text fill=\"white\" x=\"" + (x-50) + "\" y=\"" + (y+55) + "\">" + port + "</text>";
+                        result += "<text fill=\"white\" x=\"" + (x - 50) + "\" y=\"" + (y + 55) + "\">" + port + "</text>";
                         break;
                     case '9':
                         y = (portN % 2 == 0) ? 357 : 376;
                         x = 155 + ((portN > 1 ? portN - 1 : portN) / 2) * 18;
                         result = PrepareLine(x1, y1, x, y, "outOfBoard2");
-                        result += "<text fill=\"white\" x=\"" + (x-50) + "\" y=\"" + (y-45) + "\">" + port + "</text>";
+                        result += "<text fill=\"white\" x=\"" + (x - 50) + "\" y=\"" + (y - 45) + "\">" + port + "</text>";
                         break;
                 }
                 break;
@@ -516,7 +528,7 @@ public class SvgBuilder extends javax.swing.JFrame {
     private String PrepareSvg(LinkedList<String> config) {
         String result;
         String boardCase = config.pop();
-        
+
         result = PrepareBoard(boardCase);
 
         int NumberOfBoxes = config.size();
@@ -593,19 +605,19 @@ public class SvgBuilder extends javax.swing.JFrame {
                         + "  stroke-width:2\"/>";
                 break;
         }
-        
+
         switch (NumberOfBoxes) {
             case 1:
-                x = 200;
+                x += 130;
                 break;
             case 2:
-                x = 160;
+                x += 90;
                 break;
             case 3:
-                x = 110;
+                x += 40;
                 break;
         }
-        
+
         String initPort = config.pop();
 
         //initial line
@@ -617,7 +629,7 @@ public class SvgBuilder extends javax.swing.JFrame {
                 if (counter > NumberOfBoxes) {
                     break;
                 }
-                
+
                 counter++;
 
                 result += "<rect x=\"" + x + "\" y=\"" + y + "\" rx=\"0\" ry=\"0\" width=\"70\" height=\"40\"\n"
@@ -633,9 +645,8 @@ public class SvgBuilder extends javax.swing.JFrame {
 
                 if (counter == NumberOfBoxes + 1) {
                     switch (boardCase) {
-                        
+
                         // TODO make it more certain on 2,3 board
-                        
                         case "1":
                             result += PrepareLine(x + 70, y + 20, 455, 280, "right");
                             break;
@@ -651,7 +662,7 @@ public class SvgBuilder extends javax.swing.JFrame {
                 result += "<text x=\"" + (x + 15) + "\" y=\"" + (y + 23) + "\">" + config.pop() + "</text>";
                 x += 90;
             }
-            
+
             switch (boardCase) {
                 case "1":
                     x = 65;
@@ -663,10 +674,10 @@ public class SvgBuilder extends javax.swing.JFrame {
                     x = 140;
                     break;
             }
-            
+
             y += 60;
         }
-        
+
         result += "</svg>";
         return result;
     }
@@ -694,10 +705,10 @@ public class SvgBuilder extends javax.swing.JFrame {
 
     public static void main(String args[]) {
         final LinkedList<String> list = new LinkedList<>();
-        
+
         // TESTING
-        list.add("3");
-        list.add("P9_46");
+        list.add("1");
+        list.add("P1_11");
         list.add("1");
         list.add("2");
         list.add("3");

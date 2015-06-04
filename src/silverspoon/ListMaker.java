@@ -20,7 +20,7 @@ public class ListMaker {
     
     private LinkedList<String> list;
     
-    public ListMaker(Document doc) {
+    public ListMaker(Document doc, int boardNumber) {
         NodeList nodelist =  doc.getDocumentElement().getElementsByTagName("from");
         List<Element> from = new ArrayList<>();
         
@@ -34,6 +34,7 @@ public class ListMaker {
         String parsedString2[] = parsedString[1].split("\\?",2);
 
         list = new LinkedList<>();
+        list.add(String.valueOf(boardNumber));
         list.add(parsedString2[0]);
         list.add(parsedString[0]);
         

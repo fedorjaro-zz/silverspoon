@@ -235,7 +235,7 @@ public class NewJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"xml code imported");
             doc = jp.getDocument();
             
-            ListMaker maker = new ListMaker(doc);
+            ListMaker maker = new ListMaker(doc, 2);
             final LinkedList<String> list = maker.getList();      
             
             java.awt.EventQueue.invokeLater(new Runnable()

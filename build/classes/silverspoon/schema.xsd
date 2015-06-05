@@ -19,7 +19,6 @@ and open the template in the editor.
                             <xs:element name="route" type="route-type" minOccurs="1" maxOccurs="1"/>
                         </xs:sequence>
                         <xs:attribute name="trace" type="xs:boolean" />
-                        <xs:attribute name="xmlns" type="xs:string"/>
                     </xs:complexType>
                     </xs:element>
             </xs:sequence>    
@@ -64,14 +63,18 @@ and open the template in the editor.
     
     <xs:simpleType name="from-uri-type">
         <xs:restriction base="xs:string">
-            <xs:pattern value="([a-z])+[://][ph1-9?]([a-zA-Z0-9_.' !@#$%^*()_+={}|/:;,>?/`~ ])+|
-                               ([a-z])+[://][P1-9_]([0-9])+[?]([a-zA-Z0-9_.' !@#$%^*()_+={}|/:;,>?/`~ ])+"/>
+            <xs:pattern value="([a-z]){4}://P[1-9]_([0-9])+[?]([a-zA-Z0-9_.' !@#$%^*()_+={}|/:;,>?/`~ ])+"/>
         </xs:restriction>
     </xs:simpleType>
 
     <xs:simpleType name="to-uri-type">
         <xs:restriction base="xs:string">
-            <xs:pattern value="([a-z])+[:]([a-zA-Z0-9_.' !@#$%^*()_+={}|/:;,>?/`~ ])+"/>
+            <xs:pattern value="(([a-z]){4}:([a-zA-Z0-9_.' !@#$%^*()_+=&amp;-{}|/:;,>?/`~ ])+)|(([a-z]){4}://ph[1-9][?]([a-zA-Z0-9_.' !@#$%^*()_+=&amp;-{}|/:;,>?/`~ ])+)"/>
         </xs:restriction>
     </xs:simpleType>
 </xs:schema>
+
+
+<!--
+([a-z]){4}://ph[1-9][?]([a-zA-Z0-9_.' !@#$%^*()_+=&amp;-{}|/:;,>?/`~ ])+
+    -->                           

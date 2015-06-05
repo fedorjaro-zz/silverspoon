@@ -7,6 +7,8 @@ package silverspoon;
 
 import java.io.File;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
@@ -42,7 +44,6 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jInternalFrame2 = new javax.swing.JInternalFrame();
         jTabbedPane2 = new javax.swing.JTabbedPane();
-        jTabbedPane3 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -51,6 +52,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jList1 = new javax.swing.JList();
         jLabel2 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         jInternalFrame1.setVisible(true);
 
@@ -91,11 +93,16 @@ public class NewJFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Silverspoon Camel Routes Visualization");
+        setMaximumSize(new java.awt.Dimension(717, 409));
+        setMinimumSize(new java.awt.Dimension(717, 409));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
             }
         });
+
+        jPanel1.setMaximumSize(new java.awt.Dimension(705, 409));
+        jPanel1.setMinimumSize(new java.awt.Dimension(705, 409));
 
         jButton1.setText("Create the configuration");
         jButton1.setName(""); // NOI18N
@@ -112,6 +119,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
+        jTextArea1.setToolTipText("Insert your XML code here");
         jScrollPane1.setViewportView(jTextArea1);
 
         jList1.setModel(new javax.swing.AbstractListModel() {
@@ -132,61 +140,58 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setLabelFor(jList1);
+        jLabel3.setText("XML code");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addComponent(jButton2)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)
+                    .addComponent(jLabel3))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel2)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 222, Short.MAX_VALUE)
                         .addComponent(jButton1)
                         .addGap(5, 5, 5)
                         .addComponent(jButton2))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
 
         jButton1.getAccessibleContext().setAccessibleName("");
 
-        jTabbedPane3.addTab("Edit", jPanel1);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTabbedPane3)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTabbedPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -200,26 +205,36 @@ public class NewJFrame extends javax.swing.JFrame {
         String xmlSource = jTextArea1.getText();
         if(jList1.isSelectionEmpty())
         {
-            //JOptionPane.showMessageDialog(null,"pick a device wanker");
-            //return;
+            JOptionPane.showMessageDialog(null,"Pick a device");
+            return;
         }
         if(xmlSource.length() > 0)
 
         try {
             Document doc = null;
-            DocParser jp = new DocParser(xmlSource);
-            jp.stringToDom(new File("src/silverspoon/config.xml"),xmlSource);
-            jp = new DocParser(new File("src/silverspoon/config.xml"));          
-            //JOptionPane.showMessageDialog(null,"xml code imported");
-            doc = jp.getDocument();
+            DocParser dp = new DocParser(xmlSource);
+            dp.stringToDom(new File("src/silverspoon/config.xml"),xmlSource);
+            dp = new DocParser(new File("src/silverspoon/config.xml"));          
+            doc = dp.getDocument();
             
-            ListMaker maker = new ListMaker(doc, 3);
-            final LinkedList<String> list = maker.getList();      
+            ListMaker maker = new ListMaker(doc, jList1.getSelectedIndex()+1);
+            final LinkedList<String> list = maker.getList(); 
+            
+            for (int k=0; k<list.size(); k++) {
+            System.out.println(list.get(k));
+            }
+            
             java.awt.EventQueue.invokeLater(new Runnable()
             {
                 public void run()
                 {
-                    new SvgBuilder(list).setVisible(true);
+                    try {
+                        new SvgBuilder(list).setVisible(true);
+                    } catch (IllegalArgumentException ex) {
+                        JOptionPane.showMessageDialog(null,"Device is not compatible with document");
+                    } catch (Exception ex) {
+                        Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             });
             
@@ -227,7 +242,7 @@ public class NewJFrame extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //JOptionPane.showMessageDialog(null,"this shit ain't formed well");
+        JOptionPane.showMessageDialog(null,"Document is not well-formed");
         
     }//GEN-LAST:event_buttonClickResponse
 
@@ -238,7 +253,6 @@ public class NewJFrame extends javax.swing.JFrame {
             jp.stringToDom(new File("src/silverspoon/config.xml"),xmlSource);
             jTextArea1.setText("");
             jList1.clearSelection();
-            jLabel1.setIcon(null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -253,7 +267,6 @@ public class NewJFrame extends javax.swing.JFrame {
             jp.stringToDom(new File("src/silverspoon/config.xml"),xmlSource);
             jTextArea1.setText("");
             jList1.clearSelection();
-            jLabel1.setIcon(null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -300,13 +313,13 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JInternalFrame jInternalFrame2;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JList jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTabbedPane jTabbedPane3;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 }

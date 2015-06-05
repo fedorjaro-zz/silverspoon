@@ -26,6 +26,7 @@ class IconPanel extends JPanel {
         icon.setSvgURI(uri);
 
         setPreferredSize(new Dimension(640, 390));
+        icon.setScaleToFit(true);
     }
 
     public void paintComponent(Graphics g) {
@@ -54,7 +55,7 @@ public class SvgBuilder extends javax.swing.JFrame {
 
             // BOARD 1
             case "1":
-                setPreferredSize(new Dimension(555, 376));
+                //setPreferredSize(new Dimension(555, 354));
                 result = "<svg width=\"555\" height=\"354\">\n"
                         + "\n"
                         + "  <rect x=\"0\" y=\"0\" rx=\"20\" ry=\"20\" width=\"544\" height=\"354\"\n"
@@ -133,7 +134,7 @@ public class SvgBuilder extends javax.swing.JFrame {
 
             // BOARD 2
             case "2":
-                setPreferredSize(new Dimension(640, 412));
+                //setPreferredSize(new Dimension(640, 390));
                 result = "<svg width=\"640\" height=\"390\">\n"
                         + "\n"
                         + "  <rect x=\"10\" y=\"0\" rx=\"33\" ry=\"33\" width=\"400\" height=\"390\"\n"
@@ -233,7 +234,7 @@ public class SvgBuilder extends javax.swing.JFrame {
 
             // BOARD 3
             case "3":
-                setPreferredSize(new Dimension(640, 412));
+                //setPreferredSize(new Dimension(640, 412));
                 result = "<svg width=\"640\" height=\"390\">\n"
                         + "\n"
                         + "  <rect x=\"3\" y=\"0\" rx=\"7\" ry=\"7\" width=\"300\" height=\"387\"\n"
@@ -462,33 +463,36 @@ public class SvgBuilder extends javax.swing.JFrame {
         return result;
     }
 
-    private String GetInitLine(String port, String boardCase, int x1, int y1) {
+    private String GetInitLine(String port, String boardCase, int x1, int y1) throws Exception {
         char fPart = port.charAt(1);
 
         int portN = 0;
         if (fPart == 'h') {
-            portN = Integer.parseInt(port.substring(2));
-        } else {
-            portN = Integer.parseInt(port.substring(3));
+            throw new Exception("Wrong format"); 
         }
-        if (portN > 46 || portN < 1)
-            throw new Exception("Wrong port number");
+        
+        portN = Integer.parseInt(port.substring(3));
+
+
         String result = "";
         int x = 0, y = 0;
-
+        //System.out.println
         switch (boardCase) {
             case "1":
-                result = PrepareLine(97, 42, x1, y1, "down");
-                result += "<text fill=\"white\" x=\"" + (80) + "\" y=\"" + (27) + "\">" + port + "</text>";
-                
+
+                if (portN > 40 || portN < 1 || fPart != '1') {
+                    throw new Exception("Wrong format");
+                }
                 y = (portN % 2 == 0) ? 16 : 33;
-                x = 54 + ((portN > 1 ? portN - 1 : portN) / 2) * 1;
-                result = PrepareLine(x, y, x1, y1, "down");
+                x = 54 + ((portN > 1 ? portN - 1 : portN) / 2) * 17;
+                result += PrepareLine(x, y, x1, y1, "down");
                 result += "<text fill=\"white\" x=\"" + (x - 50) + "\" y=\"" + (y + 55) + "\">" + port + "</text>";
-                break;
 
                 break;
             case "2":
+                if (portN > 46 || portN < 1) {
+                    throw new Exception("Wrong format");
+                }
                 switch (fPart) {
                     case '8':
                         y = (portN % 2 == 0) ? 16 : 35;
@@ -502,22 +506,29 @@ public class SvgBuilder extends javax.swing.JFrame {
                         result = PrepareLine(x1, y1, x, y, "outOfBoard2");
                         result += "<text fill=\"white\" x=\"" + (x - 50) + "\" y=\"" + (y - 45) + "\">" + port + "</text>";
                         break;
+                    default:
+                        throw new IllegalArgumentException("wrong format");
                 }
                 break;
             case "3":
+                if (portN > 48 || portN < 1) {
+                    throw new Exception("Wrong port number");
+                }
                 switch (fPart) {
-                    case '8':
+                    case '1':
                         y = (portN % 2 == 0) ? 16 : 33;
                         x = 273 + ((portN > 1 ? portN - 1 : portN) / 2) * 13;
                         result = PrepareLine(x, y, x1, y1, "down");
                         result += "<text fill=\"white\" x=\"" + (220) + "\" y=\"" + (30) + "\">" + port + "</text>";
                         break;
-                    case '9':
+                    case '2':
                         y = (portN % 2 == 0) ? 373 : 357;
                         x = 573 - ((portN > 1 ? portN - 1 : portN) / 2) * 13;
                         result = PrepareLine(x1, y1, x, y, "outOfBoard3");
                         result += "<text fill=\"white\" x=\"" + (340) + "\" y=\"" + (325) + "\">" + port + "</text>";
                         break;
+                    default:
+                        throw new IllegalArgumentException("wrong format");
                 }
                 break;
         }
@@ -525,7 +536,7 @@ public class SvgBuilder extends javax.swing.JFrame {
         return result;
     }
 
-    private String PrepareSvg(LinkedList<String> config) {
+    private String PrepareSvg(LinkedList<String> config) throws Exception {
         String result;
         String boardCase = config.pop();
 
@@ -687,9 +698,12 @@ public class SvgBuilder extends javax.swing.JFrame {
      *
      * @param Config
      */
-    public SvgBuilder(LinkedList<String> config) {
+    public SvgBuilder(LinkedList<String> config) throws Exception {
         panel = new IconPanel(PrepareSvg(config));
         initComponents();
+        //panel.setPreferredSize(new Dimension(700,400));
+        //panel.sets
+        //panel.setPreferredSize(600,800);
         this.getContentPane().add(panel, BorderLayout.CENTER);
         pack();
     }
@@ -721,11 +735,11 @@ public class SvgBuilder extends javax.swing.JFrame {
         //list.add("4");
         //list.add("5");
         //list.add("6");
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new SvgBuilder(list).setVisible(true);
-            }
-        });
+/*
+         java.awt.EventQueue.invokeLater(new Runnable() {
+         public void run() {
+         new SvgBuilder(list).setVisible(true);
+         }
+         });*/
     }
 }

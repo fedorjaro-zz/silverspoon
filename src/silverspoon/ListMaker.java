@@ -52,6 +52,9 @@ public class ListMaker {
             list.add(parsedString[0]);
             //System.out.println(parsedString[0]);
         }
+        
+        
+        
     }
     
     public LinkedList<String> getList()

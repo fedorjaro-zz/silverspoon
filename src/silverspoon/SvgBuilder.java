@@ -468,11 +468,10 @@ public class SvgBuilder extends javax.swing.JFrame {
 
         int portN = 0;
         if (fPart == 'h') {
-            throw new Exception("Wrong format"); 
+            throw new Exception("Wrong format");
         }
-        
-        portN = Integer.parseInt(port.substring(3));
 
+        portN = Integer.parseInt(port.substring(3));
 
         String result = "";
         int x = 0, y = 0;
@@ -480,14 +479,19 @@ public class SvgBuilder extends javax.swing.JFrame {
         switch (boardCase) {
             case "1":
 
-                if (portN > 40 || portN < 1 || fPart != '1') {
+                if (portN > 40 || portN < 1) {
                     throw new Exception("Wrong format");
                 }
-                y = (portN % 2 == 0) ? 16 : 33;
-                x = 54 + ((portN > 1 ? portN - 1 : portN) / 2) * 17;
-                result += PrepareLine(x, y, x1, y1, "down");
-                result += "<text fill=\"white\" x=\"" + (x - 50) + "\" y=\"" + (y + 55) + "\">" + port + "</text>";
-
+                switch (fPart) {
+                    case '1':
+                        y = (portN % 2 == 0) ? 16 : 33;
+                        x = 54 + ((portN > 1 ? portN - 1 : portN) / 2) * 17;
+                        result += PrepareLine(x, y, x1, y1, "down");
+                        result += "<text fill=\"white\" x=\"" + (x - 50) + "\" y=\"" + (y + 55) + "\">" + port + "</text>";
+                        break;
+                    default:
+                        throw new IllegalArgumentException("wrong format");
+                }
                 break;
             case "2":
                 if (portN > 46 || portN < 1) {

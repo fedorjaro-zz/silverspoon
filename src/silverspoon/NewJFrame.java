@@ -6,21 +6,25 @@
 package silverspoon;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.XMLConstants;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-
-
 /**
- *
- * @author Michal
+ * Project GUI
+ * 
+ * @author Michal Hlinka
  */
 public class NewJFrame extends javax.swing.JFrame {
 
@@ -93,7 +97,6 @@ public class NewJFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Silverspoon Camel Routes Visualization");
-        setMaximumSize(new java.awt.Dimension(717, 409));
         setMinimumSize(new java.awt.Dimension(717, 409));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -119,11 +122,11 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
-        jTextArea1.setToolTipText("Insert your XML code here");
+        jTextArea1.setToolTipText("Insert your XMLcode here");
         jScrollPane1.setViewportView(jTextArea1);
 
         jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "BeagleBoneBlack", "Raspberry Pi B+", "CubieBoard 2" };
+            String[] strings = { "Raspberry Pi B+", "BeagleBoneBlack", "CubieBoard 2" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
@@ -141,18 +144,20 @@ public class NewJFrame extends javax.swing.JFrame {
         });
 
         jLabel3.setLabelFor(jList1);
-        jLabel3.setText("XML code");
+        jLabel3.setText("XMLcode");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)
-                    .addComponent(jLabel3))
-                .addGap(12, 12, 12)
+                    .addComponent(jScrollPane1)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -171,12 +176,12 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 222, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1)
-                        .addGap(5, 5, 5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2))
-                    .addComponent(jScrollPane1))
-                .addContainerGap())
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jButton1.getAccessibleContext().setAccessibleName("");
@@ -185,13 +190,11 @@ public class NewJFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 680, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 389, Short.MAX_VALUE)
         );
 
         pack();
@@ -201,62 +204,88 @@ public class NewJFrame extends javax.swing.JFrame {
         // TODO add your handling code here
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    
     private void buttonClickResponse(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonClickResponse
         String xmlSource = jTextArea1.getText();
-        if(jList1.isSelectionEmpty())
-        {
-            JOptionPane.showMessageDialog(null,"Pick a device");
+        if (jList1.isSelectionEmpty()) {
+            JOptionPane.showMessageDialog(null, "Pick a device");
             return;
         }
-        if(xmlSource.length() > 0)
+        if (xmlSource.length() > 0) {
+            // Document parsing
+            try {
+                Document doc = null;
+                DocParser dp = new DocParser(xmlSource);
+                dp.stringToDom(new File("src/silverspoon/config.xml"), xmlSource);
+                dp = new DocParser(new File("src/silverspoon/config.xml"));
+                doc = dp.getDocument();
 
-        try {
-            Document doc = null;
-            DocParser dp = new DocParser(xmlSource);
-            dp.stringToDom(new File("src/silverspoon/config.xml"),xmlSource);
-            dp = new DocParser(new File("src/silverspoon/config.xml"));          
-            doc = dp.getDocument();
-            
-            ListMaker maker = new ListMaker(doc, jList1.getSelectedIndex()+1);
-            final LinkedList<String> list = maker.getList(); 
-            
-            for (int k=0; k<list.size(); k++) {
-            System.out.println(list.get(k));
-            }
-            
-            java.awt.EventQueue.invokeLater(new Runnable()
-            {
-                public void run()
-                {
-                    try {
-                        new SvgBuilder(list).setVisible(true);
-                    } catch (IllegalArgumentException ex) {
-                        JOptionPane.showMessageDialog(null,"Device is not compatible with document");
-                    } catch (Exception ex) {
-                        Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                // Alteration of the "xmlns" attributes
+                Element e = (Element) doc.getDocumentElement();
+                if (e.hasAttribute("xmlns")) {
+                    e.removeAttribute("xmlns");
                 }
-            });
-            
-            return;
-        } catch (Exception e) {
-            e.printStackTrace();
+                if (e.hasAttribute("xsi:schemaLocation")) {
+                    e.removeAttribute("xsi:schemaLocation");
+                    e.setAttribute("xsi:noNamespaceSchemaLocation", "schema.xsd");
+                }
+
+                NodeList nl = doc.getDocumentElement().getElementsByTagName("camelContext");
+                e = (Element) nl.item(0);
+                if (e.hasAttribute("xmlns")) {
+                    e.removeAttribute("xmlns");
+                }
+                dp.saveToFile(new File("src/silverspoon/config.xml"));
+                
+                // Validation
+                try {
+                    SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+                    Schema schema = factory.newSchema(new File("src/silverspoon/schema.xsd"));
+                    Validator validator = schema.newValidator();
+                    validator.validate(new StreamSource(new File("src/silverspoon/config.xml")));
+                } catch (IOException | SAXException ex) {
+                    JOptionPane.showMessageDialog(null, "This XML does not follow the schema");
+                    return;
+                }
+                
+                // List of CamelContext route nodes
+                ListMaker maker = new ListMaker(doc, jList1.getSelectedIndex() + 1);
+                final LinkedList<String> list = maker.getList();
+
+                // SVG Builder
+                java.awt.EventQueue.invokeLater(new Runnable() {
+                    public void run() {
+                        try {
+                            new SvgBuilder(list).setVisible(true);
+                        } catch (IllegalArgumentException ex) {
+                            JOptionPane.showMessageDialog(null, "Picked device is not compatible with document");
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(null, "There is no such port");
+                            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                });
+
+                return;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        JOptionPane.showMessageDialog(null,"Document is not well-formed");
-        
+        JOptionPane.showMessageDialog(null, "Document is not well-formed");
+
     }//GEN-LAST:event_buttonClickResponse
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         String xmlSource = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" + "<root>\n" + "\n" + "</root>";
         try {
             DocParser jp = new DocParser(new File("src/silverspoon/config.xml"));
-            jp.stringToDom(new File("src/silverspoon/config.xml"),xmlSource);
+            jp.stringToDom(new File("src/silverspoon/config.xml"), xmlSource);
             jTextArea1.setText("");
             jList1.clearSelection();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }//GEN-LAST:event_formWindowClosed
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
@@ -264,14 +293,14 @@ public class NewJFrame extends javax.swing.JFrame {
         String xmlSource = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" + "<root>\n" + "\n" + "</root>";
         try {
             DocParser jp = new DocParser(new File("src/silverspoon/config.xml"));
-            jp.stringToDom(new File("src/silverspoon/config.xml"),xmlSource);
+            jp.stringToDom(new File("src/silverspoon/config.xml"), xmlSource);
             jTextArea1.setText("");
             jList1.clearSelection();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }//GEN-LAST:event_jButton2MouseClicked
-    
+
     /**
      * @param args the command line arguments
      */

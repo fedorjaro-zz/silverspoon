@@ -13,13 +13,22 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 /**
- *
+ * This class creates LinkedList later to be used for SVG Builder
+ * 
  * @author tomaspecuch
  */
 public class ListMaker {
     
     private LinkedList<String> list;
-    
+    /**
+     *      
+     * Creates list of strings for SVGBuilder. First element is a board number,
+     * second element is port number and the rest are the elements of Camel route.
+     * 
+     * @param doc Document created from XML file.
+     * @param boardNumber Number used to identify board.
+     * 
+     */
     public ListMaker(Document doc, int boardNumber) {
         NodeList nodelist =  doc.getDocumentElement().getElementsByTagName("from");
         List<Element> from = new ArrayList<>();
@@ -35,7 +44,7 @@ public class ListMaker {
 
         list = new LinkedList<>();
         list.add(String.valueOf(boardNumber));
-        list.add(parsedString2[0]);
+        list.add(parsedString2[0]); 
         list.add(parsedString[0]);
         
         nodelist =  doc.getDocumentElement().getElementsByTagName("to");
@@ -51,12 +60,14 @@ public class ListMaker {
             parsedString = unparsedString.split(":",2);
             list.add(parsedString[0]);
             //System.out.println(parsedString[0]);
-        }
-        
-        
-        
+        }        
     }
     
+    /**
+     * Returns LinkedList
+     * 
+     * @return LinkedList
+     */
     public LinkedList<String> getList()
     {
         return this.list;

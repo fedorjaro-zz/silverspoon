@@ -10,8 +10,9 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
- *
- * @author Michal
+ * Error handler used by DocParser class
+ * 
+ * @author Michal Hlinka
  */
 public class SimpleErrorHandler implements ErrorHandler {
     public void warning(SAXParseException e) throws SAXException {

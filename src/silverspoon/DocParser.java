@@ -19,14 +19,23 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
- *
- * @author Michal
+ * This class parses documents
+ * 
+ * @author Michal Hlinka
  */
-class DocParser {
+public class DocParser {
 
     private File file;
     private Document document = null;
     
+    /**
+     * Takes XMLFile and parses it onto a document
+     * 
+     * @param xmlFile XMLFile to be parsed onto a document
+     * @throws SAXException
+     * @throws ParserConfigurationException
+     * @throws IOException 
+     */
     public DocParser(File xmlFile) throws SAXException, ParserConfigurationException, IOException {
         this.file = xmlFile;
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -37,6 +46,14 @@ class DocParser {
         document = dBuilder.parse(file);
     }
     
+    /**
+     * Takes XML string and parses it onto a document
+     * 
+     * @param xml XMLstring to be parsed onto a document
+     * @throws SAXException
+     * @throws ParserConfigurationException
+     * @throws IOException 
+     */
     public DocParser(String xml) throws SAXException, ParserConfigurationException, IOException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -44,19 +61,22 @@ class DocParser {
         builder.parse(is);
     }
     
-    /*public static Document loadXMLFromString(String xml) throws Exception
-    {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        InputSource is = new InputSource(new StringReader(xml));
-        return builder.parse(is);
-    }*/
-    
+    /**
+     * Returns document
+     * 
+     * @return document
+     */
     public Document getDocument(){
         return document;
     }
     
-    
+    /**
+     * Saves the current document to a file
+     * 
+     * @param file File to be saved
+     * @throws TransformerConfigurationException
+     * @throws TransformerException
+     */
     public void saveToFile(File file) throws TransformerConfigurationException, TransformerException{
         TransformerFactory tFactory =TransformerFactory.newInstance();
         Transformer transformer = tFactory.newTransformer();
@@ -67,6 +87,13 @@ class DocParser {
         transformer.transform(source, result); 
     }
     
+    /**
+     * Takes xmlSource string and saves it as a file
+     * 
+     * @param file to be saved with xmlSource parameter as its source
+     * @param xmlSource String that will be saved as a file
+     * @throws IOException 
+     */
     public static void stringToDom(File file, String xmlSource) throws IOException 
     {
         FileWriter fw = new FileWriter(file);

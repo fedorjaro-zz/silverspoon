@@ -144,7 +144,7 @@ public class NewJFrame extends javax.swing.JFrame {
         });
 
         jLabel3.setLabelFor(jList1);
-        jLabel3.setText("XMLcode");
+        jLabel3.setText("Insert your XML code here:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -176,12 +176,12 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 213, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1))
+                .addContainerGap())
         );
 
         jButton1.getAccessibleContext().setAccessibleName("");
@@ -194,7 +194,7 @@ public class NewJFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 389, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -209,6 +209,8 @@ public class NewJFrame extends javax.swing.JFrame {
         String xmlSource = jTextArea1.getText();
         if (jList1.isSelectionEmpty()) {
             JOptionPane.showMessageDialog(null, "Pick a device");
+            
+            
             return;
         }
         if (xmlSource.length() > 0) {
@@ -255,8 +257,9 @@ public class NewJFrame extends javax.swing.JFrame {
                 // SVG Builder
                 java.awt.EventQueue.invokeLater(new Runnable() {
                     public void run() {
-                        try {
+                        try {                   
                             new SvgBuilder(list).setVisible(true);
+                           
                         } catch (IllegalArgumentException ex) {
                             JOptionPane.showMessageDialog(null, "Picked device is not compatible with document");
                         } catch (Exception ex) {

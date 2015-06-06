@@ -10,6 +10,8 @@ import com.kitfox.svg.app.beans.*;
 import java.util.LinkedList;
 
 /**
+ * This class creates panel with drawing of board.
+ * 
  * @author Jaroslav, Milan
  */
 class IconPanel extends JPanel {
@@ -18,17 +20,29 @@ class IconPanel extends JPanel {
     final SVGIcon icon;
     private String config;
 
+    /**
+     * Creates panel, clears previous drawing, perform new drawing 
+     * 
+     * @param c final SVG code
+     */
     public IconPanel(String c) {
         StringReader reader = new StringReader(c);
+        
+        SVGCache.getSVGUniverse().clear();
         URI uri = SVGCache.getSVGUniverse().loadSVG(reader, "myImage");
 
         icon = new SVGIcon();
         icon.setSvgURI(uri);
-
-        setPreferredSize(new Dimension(640, 390));
         icon.setScaleToFit(true);
+        
+        setPreferredSize(new Dimension(640, 390));
     }
 
+    /**
+     * Paints background.
+     * 
+     * @param g graphics
+     */
     public void paintComponent(Graphics g) {
         final int width = getWidth();
         final int height = getHeight();
@@ -40,11 +54,21 @@ class IconPanel extends JPanel {
     }
 }
 
+/**
+ * Perform board drawing
+ * 
+ * @author Milan, Jaroslav
+ */
 public class SvgBuilder extends javax.swing.JFrame {
-
     public static final long serialVersionUID = 0;
     IconPanel panel;
 
+    /**
+     * Creates SVG code of board without nodes and lines.
+     * 
+     * @param config configuration of board (type, camel route)
+     * @return string which contains SVG code of board without nodes and lines
+     */
     private String PrepareBoard(String config) {
         String result = "";
 
@@ -55,7 +79,6 @@ public class SvgBuilder extends javax.swing.JFrame {
 
             // BOARD 1
             case "1":
-                //setPreferredSize(new Dimension(555, 354));
                 result = "<svg width=\"555\" height=\"354\">\n"
                         + "\n"
                         + "  <rect x=\"0\" y=\"0\" rx=\"20\" ry=\"20\" width=\"544\" height=\"354\"\n"
@@ -134,7 +157,6 @@ public class SvgBuilder extends javax.swing.JFrame {
 
             // BOARD 2
             case "2":
-                //setPreferredSize(new Dimension(640, 390));
                 result = "<svg width=\"640\" height=\"390\">\n"
                         + "\n"
                         + "  <rect x=\"10\" y=\"0\" rx=\"33\" ry=\"33\" width=\"400\" height=\"390\"\n"
@@ -234,7 +256,6 @@ public class SvgBuilder extends javax.swing.JFrame {
 
             // BOARD 3
             case "3":
-                //setPreferredSize(new Dimension(640, 412));
                 result = "<svg width=\"640\" height=\"390\">\n"
                         + "\n"
                         + "  <rect x=\"3\" y=\"0\" rx=\"7\" ry=\"7\" width=\"300\" height=\"387\"\n"
@@ -351,6 +372,14 @@ public class SvgBuilder extends javax.swing.JFrame {
         return result;
     }
 
+    /**
+     * Creates SVG code of arrow.
+     * 
+     * @param x coordinate x
+     * @param y coordinate y
+     * @param direction direction down or right 
+     * @return string which contains SVG code of arrow
+     */
     private String DrawArrow(int x, int y, String direction) {
         String result = "";
 
@@ -368,6 +397,16 @@ public class SvgBuilder extends javax.swing.JFrame {
         return result;
     }
 
+    /**
+     * Creates SVG code of line.
+     * 
+     * @param x coordinate x
+     * @param y coordinate y
+     * @param x1 coordinate x1
+     * @param y1 coordinate y1
+     * @param direction direction of current line
+     * @return string which contains SVG code of line
+     */
     private String PrepareLine(int x, int y, int x1, int y1, String direction) {
         String result = "";
         int middleX = Math.round((x + x1) / 2);
@@ -463,6 +502,16 @@ public class SvgBuilder extends javax.swing.JFrame {
         return result;
     }
 
+    /**
+     * Creates SVG code for initial line from given port.
+     * 
+     * @param port port where line starts
+     * @param boardCase type of board
+     * @param x1 coordinate x
+     * @param y1 coordinate y
+     * @return string which contains SVG code of initial line
+     * @throws Exception when invalid port number is given
+     */
     private String GetInitLine(String port, String boardCase, int x1, int y1) throws Exception {
         char fPart = port.charAt(1);
 
@@ -474,8 +523,9 @@ public class SvgBuilder extends javax.swing.JFrame {
         portN = Integer.parseInt(port.substring(3));
 
         String result = "";
-        int x = 0, y = 0;
-        //System.out.println
+        int x = 0;
+        int y = 0;
+        
         switch (boardCase) {
             case "1":
 
@@ -540,6 +590,13 @@ public class SvgBuilder extends javax.swing.JFrame {
         return result;
     }
 
+    /**
+     * Creates final SVG code.
+     * 
+     * @param config configuration of board (type, camel route)
+     * @return string which contains final SVG code
+     * @throws Exception when configuration is invalid
+     */
     private String PrepareSvg(LinkedList<String> config) throws Exception {
         String result;
         String boardCase = config.pop();
@@ -633,9 +690,8 @@ public class SvgBuilder extends javax.swing.JFrame {
                 break;
         }
 
+        // INITIAL LINE
         String initPort = config.pop();
-
-        //initial line
         int counter = 1;
         result += GetInitLine(initPort, boardCase, x + 35, y);
 
@@ -655,13 +711,10 @@ public class SvgBuilder extends javax.swing.JFrame {
                             + (x + 90) + "\" y2=\"" + (y + 20) + "\" style=\"stroke:rgb(255,255,255); \n"
                             + "  stroke-width:2\"/>"
                             + DrawArrow(x + 90, y + 20, "right");
-
                 }
 
                 if (counter == NumberOfBoxes + 1) {
                     switch (boardCase) {
-
-                        // TODO make it more certain on 2,3 board
                         case "1":
                             result += PrepareLine(x + 70, y + 20, 455, 280, "right");
                             break;
@@ -699,15 +752,13 @@ public class SvgBuilder extends javax.swing.JFrame {
 
     /**
      * Creates new form SVGIconDemo
-     *
-     * @param Config
+     * 
+     * @param config configuration of board (type, camel route)
+     * @throws Exception when configuration is invalid
      */
     public SvgBuilder(LinkedList<String> config) throws Exception {
         panel = new IconPanel(PrepareSvg(config));
         initComponents();
-        //panel.setPreferredSize(new Dimension(700,400));
-        //panel.sets
-        //panel.setPreferredSize(600,800);
         this.getContentPane().add(panel, BorderLayout.CENTER);
         pack();
     }
@@ -719,31 +770,5 @@ public class SvgBuilder extends javax.swing.JFrame {
      */
     private void initComponents() {
         setLayout(new java.awt.BorderLayout());
-    }
-
-    public static void main(String args[]) {
-        final LinkedList<String> list = new LinkedList<>();
-
-        // TESTING
-        list.add("1");
-        list.add("P1_11");
-        list.add("1");
-        list.add("2");
-        list.add("3");
-        list.add("4");
-        list.add("5");
-        list.add("6");
-        //ist.add("1");
-        //list.add("2");
-        //list.add("3");
-        //list.add("4");
-        //list.add("5");
-        //list.add("6");
-/*
-         java.awt.EventQueue.invokeLater(new Runnable() {
-         public void run() {
-         new SvgBuilder(list).setVisible(true);
-         }
-         });*/
     }
 }

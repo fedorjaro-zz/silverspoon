@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "../docbook-xml-4.5/docbookx.dtd">
+
+<book lang="sk">
+  
+    <bookinfo>
+        <title>PB138 - projekt Silverspoon - závěrečná správa</title>
+        <author>
+            <firstname>Milan</firstname>
+            <surname>Strnad</surname>
+        </author>
+    </bookinfo>
+  
+    <preface>
+        <title>Úvod</title>
+        <para>
+            Mojou úlohou bolo vytvorenie SVG kódu na vizualizáciu všetkých 3 používaných dosiek (Raspberry Pi B+, BeagleBone Black, CubieBoard 2) pomocou knižnice svgSalamander, vytvorenie funkcie na generovanie SVG kódu na vykresľovanie šipiek k čiarám (DrawArrow) a finálne testovanie aplikácie.
+        </para>
+    </preface>
+
+    <chapter>
+        <title>SVG kódy</title>
+        <para>
+            Na internete som vyhľadal obrázky dosiek v ich reálnej podobe a na základe nich som vytváral vizualizáciu (najmä tretej dosky CubieBoard 2) pre našu aplikáciu. Používal som elementy ako napríklad rect, circle, polygon a text. Keďže naša aplikácia nepodporuje zadávanie rozmerov objektov pomocou percent, všetky hodnoty museli byť stanovené presne a pevne. Pre uľahčenie vykresľovania Apache Camel Routes v ďalšej fáze som zachoval veľkosť centrálnej plochy pre ne určenej u všetkých 3 dosiek. Niektoré prvky dosiek som pre ušetrenie práce a kódu vykresľoval pomocou cyklov (napríklad porty). Funkcia na vykresľovanie šipiek preberá parametre x,y a smer a vygeneruje SVG kód na vykreslenie šipky na danom mieste v danom smere.
+        </para>
+    </chapter>
+
+    <chapter>
+        <title>Testovanie</title>
+        <para>
+            Po dokončení aplikácie som mal na starosti jej testovanie. Testoval som rôzne vstupy a sledoval chybové hlášky, výstupy a celkové chovanie aplikácie. Zdá sa, že všetko je v poriadku.
+        </para>
+    </chapter>
+    
+    <chapter>
+	<title>Zhodnotenie</title>
+        <para>
+            Za najväčší prínos pri vypracovávaní tohoto projektu považujem získanie znalostí v SVG a s nástrojom Git-Hub a získanie skúsenosti s prácou na spoločnej úlohe v tíme.
+        </para>
+    </chapter>
+    
+</book>

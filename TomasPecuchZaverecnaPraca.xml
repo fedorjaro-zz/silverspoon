@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "../docbook-xml-4.5/docbookx.dtd">
+
+<book lang="cz">
+  
+  <bookinfo>
+    <title>Záverečná správa k projektu Vizualizácia pre Silverspoon.io</title>
+    <author>
+      <firstname>Tomáš</firstname>
+      <surname>Pecuch</surname>
+    </author>
+  </bookinfo>
+  
+    <preface>
+        <title>Úvod</title>
+        <para>
+			 Mojím zameraním v projekte bolo vytvorenie XML schémy pre kotrolu vstupného XML súboru 
+                        a vytvorenie LinkedListu z naparsovaného dokumentu pre jednuššie vytvorenie SVG.			
+        </para>
+    </preface>
+    <chapter>
+        <title>XML schema</title>
+        <para>
+			Schéma sa zameriava na formát, ktorý je potrebne dodržať pre správne vykreslenie Camel route v aplikácii.
+                        Vytvorenie kompletnej schémy je zbytočné, keďže je voľne dostupná a jej vytvorenie by bolo časovo náročné.
+                        
+        </para>
+        <para>
+                        Hlavná časť schémy je kontrola tagov "from" a "to". V súbore sa musí nachádzať minimálne 1 tag from. 
+                        V tagu from sa taktiež nesmie zabudnúť na port, ktorý sa bude používať.
+        </para>
+    </chapter>
+    <chapter>
+        <title>Vytvorenie LinkedListu pomocou triedy vlastnej triedy ListMaker</title>
+        <para>
+                        Túto triedu som vytvoril po dohode s členmi týmu. 
+                        Uľahčuje vykresľovanie tým, že už nie je potrebné získavať potrebné informácie z dokumentu, ale sú jednocho prístupné v spojovanom zozname.
+                        K vytvorenému zoznamu sa pristupuje pomocou public funkcie getList(). Prvý prvok listu je identifikátor dosky (číslo 1 až 3), druhý prvok je port a zvyšné prvky sú samotné Camel route uzly.
+        </para>
+    </chapter>
+	<chapter>
+		<title>Zhodnotenie</title>
+		<para>
+                Mezdi najväčšie pozitíva projektu považujem oboznámenie sa s verzovacím systémom a vyskúšanie si týmovej spolupráce.
+                Najviac sa mi páčila konzultácia návrhu a aj samotného dizajnu aplikácie s týmom.
+                </para>
+	</chapter>
+</book>

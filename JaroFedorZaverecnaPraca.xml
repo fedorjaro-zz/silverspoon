@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "../docbook-xml-4.5/docbookx.dtd">
+
+<book lang="cz">
+  
+  <bookinfo>
+    <title>Závěrečná zpráva k projektu z PB138 - Silverspoon</title>
+    <author>
+      <firstname>Jaroslav</firstname>
+      <surname>Fedor</surname>
+    </author>
+  </bookinfo>
+  
+    <preface>
+        <title>Úvod</title>
+        <para>
+                        Mojou častou práce bolo vytvoriť SVG výstup na základe vstupu, ktorý bol predaný ako argument konštruktoru.
+                        Na vykresľovanie SVG výstupu som použil už implementovanú knižnicu svgSalamander.
+        </para>
+    </preface>
+
+    <chapter>
+        <title>Vstup</title>
+        <para>
+                       Po dokladom premysleni, sme za dátovú štrukturu nosiacu informacie o doske zvolili jednoduchy zretazeny zoznam.
+                       Kedže vykreslovanie nastava postupne, nieje potrebne vyuzivat zlozite skustrury. Kazdy prvok je typu "String".
+                       Dohodli sme sa, ze prvy prvok zoznamu nesie informaciu o doske (1/2/3), dalsi cislo port(inicializacny) a zvysne 
+                       prvky sluzia na zaznamenanie vsetkych dalsich prvkov.
+        </para>
+    </chapter>
+
+    <chapter>
+        <title>Vykreslovanie</title>
+        <para>
+                       Na generovanie svg znaciek pouzivam rozne funckie, kvoli citatelnosti kodu. Pouzivam prepinace, kvoli trom typom dosak. 
+                       For cykly kvoli vykreslovaniu portov na doskach.
+        </para>
+    </chapter>
+    <chapter>
+	<title>Zhodnocení</title>
+        <para>
+                       Ako najvacsi prinos tohto prejektu hodnotim moznost tymovej spoluprace. Bolo velmi poucne preberat navrh aplikacie s otatnymi clenmi tymu a prechadzat ich kod.
+        </para>
+	</chapter>
+</book>

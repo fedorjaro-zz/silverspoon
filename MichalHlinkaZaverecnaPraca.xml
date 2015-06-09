@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "../docbook-xml-4.5/docbookx.dtd">
+
+<book lang="sk">
+  
+  <bookinfo>
+    <title>Záverečná správa k projektu Vizualizácia pre Silverspoon.io</title>
+    <author>
+      <firstname>Michal</firstname>
+      <surname>Hlinka</surname>
+    </author>
+  </bookinfo>
+  
+    <preface>
+        <title>Úvod</title>
+        <para>
+			Mojou prácou na projekte bol návrh GUI a komunikácia medzi jeho jednotlivými komponentmi,
+			vytvorenie tried DocParser a SimpleErrorHandler a validácia dokumentu.
+       </para>
+    </preface>
+    <chapter>
+        <title>Návrh a vytvorenie GUI</title>
+        <para>
+			Základné GUI som sa snažil vytvoriť čo najjednoduchšie, aby bolo pre koncového užívateľa
+			čo najprívetivejšie. Obsahuje dva Button komponenty, jeden komponent TextArea a jeden List.
+        </para>
+        <para>
+			Na základe komunikácie medzi jednotlivými komponentami, ale aj komunikácie s inými triedami
+			ošetruje rôzne nežiadúce situácie, alebo chytá výnimky a upozorňuje o tom koncového užívateľa.
+        </para>
+    </chapter>
+    <chapter>
+        <title>DocParser</title>
+        <para>
+			Jednoduchá trieda na parsovanie reťazca na org.w3c.dom dokument, ukladanie reťazca do File
+			a ukladanie dokumentu do File. Využíva triedu SimpleErrorHandler.                        
+        </para>
+    </chapter>
+    <chapter>
+        <title>Validácia dokumentu</title>
+        <para>
+			Skôr ako sa začne validácia, upravujem jeho atribút schemaLocation na našu schému a výsledný
+			dokument ukladám. Potom prebieha samotná validácia.
+        </para>
+    </chapter>
+    <chapter>
+        <title>Zhodnotenie</title>
+        <para>
+			Za najväčší prínos projektu považujem otestovanie si práce v týme. Páčila sa mi konzultácia
+			o projekte, jeho návrhu a deľbe práce.
+        </para>
+    </chapter>
+</book>
